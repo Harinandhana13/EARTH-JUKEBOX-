@@ -1,0 +1,27 @@
+{
+ "sea_surface_temperature_el_nino_2026.jpg": {
+  "title": "Sea surface temperature, El Niño 2026",
+  "alt": "Two globes of the Pacific Ocean. The left globe, one year ago, shows mostly cooler blue water along the equator. The right globe, 12 November 2026, shows a strong dark red band of much warmer water stretching along the equator from the South American coast, a sign of El Niño.",
+  "credit": "NASA Scientific Visualization Studio, visualizer Kel Elkins. Data: JPL MUR SST. https://svs.gsfc.nasa.gov/5688"
+ },
+ "ocean_color_el_nino_2026.jpg": {
+  "title": "Ocean colour, El Niño 2026",
+  "alt": "Two stacked maps of the tropical Pacific, 11 November 2026 on top and 11 November 2025 below. Deep blue means low ocean productivity, green and yellow means high. The 2025 map shows a greener band along the equator that is much weaker in 2026.",
+  "credit": "NASA Scientific Visualization Studio, visualizer Kel Elkins. Data: NASA PACE mission. https://svs.gsfc.nasa.gov/5687"
+ },
+ "global_co2_dyamond_2020.jpg": {
+  "title": "Global carbon dioxide, 2020",
+  "alt": "World map with dark blue ocean, grey-brown land and white snow in the far north and Antarctica. Orange patches of carbon dioxide cover the Amazon, central Africa, eastern China, Europe and the eastern United States.",
+  "credit": "NASA Scientific Visualization Studio, DYAMOND model, visualizers AJ Christensen, Greg Shirah, Helen-Nicole Kostis, Mark SubbaRao; scientist Lesley Ott. https://svs.gsfc.nasa.gov/5436/"
+ },
+ "global_methane_geos_2021.jpg": {
+  "title": "Global methane, 2021",
+  "alt": "A globe seen from above the Americas, wrapped in glowing purple haze that shows methane in the atmosphere. North and South America show through in natural colours on a black background. A timeline from January to December runs along the bottom.",
+  "credit": "NASA Scientific Visualization Studio, visualizers Helen-Nicole Kostis and AJ Christensen, scientists Lesley Ott and Brad Weir. Data: NASA GMAO GEOS model; Blue Marble Next Generation. https://svs.gsfc.nasa.gov/5116/"
+ },
+ "methane_wetlands_2021.jpg": {
+  "title": "Methane from wetlands, Sep 2021",
+  "alt": "A dark world map showing methane released by wetlands in September 2021. Bright yellow and orange hotspots mark Hudson Bay, western Siberia, the Amazon, the Pantanal, central Africa, South and Southeast Asia and the southeastern United States. A colour bar runs from 0 to 2 grams of methane per square metre per month.",
+  "credit": "NASA Scientific Visualization Studio, Methane Emissions from Wetlands. https://svs.gsfc.nasa.gov/5054/"
+ }
+}

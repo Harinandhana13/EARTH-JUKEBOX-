@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Earth Jukebox turns Earth science imagery into an exploratory soundscape.">
+  <title>Earth Jukebox — Hear the Planet</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/tone@15.1.22/build/Tone.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Earth Jukebox home"><span class="brand-mark">◉</span> EARTH JUKEBOX</a>
+    <span class="top-note">AN ACCESSIBLE EARTH DATA EXPERIENCE</span>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="eyebrow">EARTH OBSERVATION • DATA SONIFICATION</div>
+      <h1>Hear the planet.<br><em>Feel the change.</em></h1>
+      <p class="hero-copy">Turn Earth imagery into an evolving soundscape. Explore color, brightness and visual patterns through sound.</p>
+      <div class="hero-pills"><span>IMAGE → SOUND</span><span>REAL-TIME EXPLORATION</span><span>ACCESSIBILITY FIRST</span></div>
+    </section>
+
+    <section class="workspace" aria-label="Earth Jukebox workspace">
+      <div class="panel visual-panel">
+        <div class="panel-heading">
+          <div><div class="eyebrow">01 / VISUAL INPUT</div><h2>Choose an Earth frame</h2></div>
+          <span class="status-dot">READY</span>
+        </div>
+        <label class="upload-zone" for="imageInput" id="dropZone">
+          <span class="upload-icon">＋</span>
+          <strong>Drop an image here or browse</strong>
+          <span>PNG, JPG, WEBP · up to 80 MB</span>
+          <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp,image/bmp">
+        </label>
+        <div class="preview-wrap" id="previewWrap" hidden>
+          <img id="previewImage" alt="Selected Earth science visualization">
+          <button class="text-button" id="removeImage" type="button">Remove image</button>
+        </div>
+        <div class="gallery-block">
+          <div class="analysis-title">EARTH SCENES</div>
+          <div class="gallery" id="gallery" role="group" aria-label="Earth scene gallery"></div>
+          <span class="hint" id="galleryHint">Built-in scenes are illustrative images generated in your browser, not NASA imagery. Drop real NASA EIC frames into <code>static/frames/</code> and they appear here automatically.</span>
+        </div>
+        <div class="analysis-card" aria-live="polite">
+          <div class="analysis-title">VISUAL ANALYSIS</div>
+          <p id="analysisText">Choose an image to analyze its visual features.</p>
+          <div class="metrics">
+            <div><span>BRIGHTNESS</span><strong id="brightness">—</strong></div>
+            <div><span>RED PIXELS</span><strong id="redShare">—</strong></div>
+            <div><span>BLUE PIXELS</span><strong id="blueShare">—</strong></div>
+            <div><span>EDGE DENSITY</span><strong id="edgeDensity">—</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel sound-panel">
+        <div class="panel-heading">
+          <div><div class="eyebrow">02 / SONIFICATION</div><h2>Listen to the data</h2></div>
+          <span class="sound-icon" aria-hidden="true">♫</span>
+        </div>
+        <div class="sound-orb" id="soundOrb" aria-hidden="true"><div class="orb-core"></div><div class="orb-ring ring-one"></div><div class="orb-ring ring-two"></div></div>
+        <p class="sound-state" id="soundState" aria-live="polite">Your soundscape is waiting</p>
+        <div class="player-controls">
+          <button class="play-button" id="playButton" type="button" disabled><span>▶</span> Play soundscape</button>
+          <button class="stop-button" id="stopButton" type="button" disabled>Stop</button>
+        </div>
+        <div class="control-grid">
+          <label>Sound character
+            <select id="instrument">
+              <option value="synth">Warm synthesizer</option>
+              <option value="pluck">Soft pluck</option>
+              <option value="ambient">Ambient pad</option>
+            </select>
+          </label>
+          <label>Exploration speed
+            <select id="speed">
+              <option value="0.75">Slow</option>
+              <option value="1" selected>Natural</option>
+              <option value="1.35">Fast</option>
+            </select>
+          </label>
+        </div>
+        <div class="mapping">
+          <div class="analysis-title">HOW TO READ THE SOUND</div>
+          <div class="mapping-row"><span class="mapping-symbol red"></span><span><b>Red-toned pixels</b><small>Raise the central pitch</small></span></div>
+          <div class="mapping-row"><span class="mapping-symbol blue"></span><span><b>Blue-toned pixels</b><small>Lower the central pitch slightly</small></span></div>
+          <div class="mapping-row"><span class="mapping-symbol light"></span><span><b>Brightness</b><small>Controls loudness</small></span></div>
+          <div class="mapping-row"><span class="mapping-symbol pattern"></span><span><b>Visual edges and texture</b><small>Influence note density and tempo</small></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel nasa-panel" aria-label="NASA GISTEMP data sonification">
+      <div class="panel-heading">
+        <div><div class="eyebrow">03 / OFFICIAL NASA DATA</div><h2>Hear global temperature change</h2></div>
+        <span class="status-dot">NASA GISS</span>
+      </div>
+      <p class="nasa-intro">Load NASA GISTEMP v4 annual global temperature anomalies (1880–present) and hear how the measured anomaly changes over time. This mode uses numeric data, not image colours.</p>
+      <div class="nasa-actions">
+        <button class="secondary-button" id="loadNasaButton" type="button">Load NASA GISTEMP data</button>
+        <span id="nasaStatus" class="hint" aria-live="polite">Not loaded yet</span>
+      </div>
+      <div id="nasaDataPanel" hidden>
+        <canvas id="nasaStripes" width="900" height="46" role="img" aria-label="Warming stripes: one colour band per year, blue for cooler and red for warmer than the 1951 to 1980 average"></canvas>
+        <canvas id="nasaChart" width="900" height="260" role="img" aria-label="Chart of NASA annual global temperature anomalies"></canvas>
+        <div class="nasa-player">
+          <label for="nasaYearSlider">Year: <strong id="nasaYearLabel">—</strong></label>
+          <input id="nasaYearSlider" type="range" min="0" max="1" value="0" disabled>
+          <div class="nasa-actions">
+            <button class="play-button" id="playNasaButton" type="button" disabled>▶ Play NASA data</button>
+            <button class="stop-button" id="stopNasaButton" type="button" disabled>Stop</button>
+          </div>
+          <p id="nasaReading" class="nasa-reading" aria-live="polite">Load the dataset to see a year and anomaly.</p>
+        </div>
+      </div>
+      <p class="nasa-credit">Source: NASA Goddard Institute for Space Studies, GISTEMP v4. Anomalies are relative to the 1951–1980 mean. <a href="https://data.giss.nasa.gov/gistemp/data_v4.html" target="_blank" rel="noopener">NASA dataset details</a>.</p>
+    </section>
+
+    <section class="access-panel">
+      <div><div class="eyebrow">04 / ACCESSIBILITY</div><h2>Science should be experienced by everyone.</h2>
+      <p id="accessibleDescription">When an image is analyzed, a plain-language description appears here. Use keyboard navigation and a screen reader to explore the controls.</p></div>
+      <button class="secondary-button" id="speakButton" type="button">Read description aloud</button>
+    </section>
+
+    <section class="science-note">
+      <strong>Scientific note</strong>
+      <p>This prototype analyzes image appearance, not the underlying physical measurements. Red does not automatically mean heat, and blue does not automatically mean cold: the original visualization legend and source data must be consulted before making scientific interpretations. The sound mappings are an artistic accessibility layer, not a substitute for the original data or its legend.</p>
+    </section>
+  </main>
+
+  <footer><span>EARTH JUKEBOX</span><span>An accessible way to explore Earth imagery through sound</span></footer>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/gallery.js') }}"></script>
+</body>
+</html>
